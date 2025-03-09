@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+main {
+  width: 100vw;
+  height: 100vh;
+}
+
+/* Désactivation des flèches dans l'input de type number */
+.no-arrow {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.no-arrow::-webkit-outer-spin-button,
+.no-arrow::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
