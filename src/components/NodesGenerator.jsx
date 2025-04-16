@@ -9,29 +9,30 @@ const NodesGenerator = ({ fieldValue, setNodes }) => {
 
     const letters = generateAlphabet(fieldValue);
     const updatedNodes = [];
-    const horizontalSpacing = 180; // Espacement horizontal entre les nœuds (plus grand)
-    const verticalSpacing = 150; // Espacement vertical entre les rangées (plus grand)
+    const verticalSpacing = 300; // Espacement entre les nœuds dans une "colonne"
+    const horizontalSpacing = 400; // Espacement entre les colonnes (plus large)
 
     let index = 0;
-    let row = 1;
-    let yPosition = 0;
+    let col = 1;
+    let xPosition = 0;
 
     while (index < letters.length) {
-      const nodesInRow = Math.min(row, letters.length - index); // Nombre de nœuds dans la rangée
-      const totalWidth = (nodesInRow - 1) * horizontalSpacing;
-      let xStart = -totalWidth / 2; // Centrage des nœuds
+      const nodesInCol = Math.min(col, letters.length - index); // 2 ou 3 nœuds dans la "colonne"
+      const totalHeight = (nodesInCol - 1) * verticalSpacing;
+      let yStart = -totalHeight / 2; // Centrage vertical
 
-      for (let i = 0; i < nodesInRow; i++) {
+      for (let i = 0; i < nodesInCol; i++) {
         updatedNodes.push({
           id: (index + 1).toString(),
+          type: "circle",
           data: { label: letters[index] },
-          position: { x: xStart + i * horizontalSpacing, y: yPosition },
+          position: { x: xPosition, y: yStart + i * verticalSpacing },
         });
         index++;
       }
 
-      row = row === 3 ? 2 : 3; // Alterner entre 2 et 3 nœuds par ligne
-      yPosition += verticalSpacing;
+      col = col === 3 ? 2 : 3; // Alterne entre 3 et 2 nœuds par colonne
+      xPosition += horizontalSpacing; // Passe à la colonne suivante
     }
 
     setNodes(updatedNodes);

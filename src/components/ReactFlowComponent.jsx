@@ -10,10 +10,18 @@ import {
 import "@xyflow/react/dist/style.css";
 import NodesGenerator from "./NodesGenerator";
 import EdgeModifier from "./EdgeModifier";
+import CircleNode from "./CircleNode";
+import { useEdgeValues } from "../contexts/EdgeValuesContext";
 
 const ReactFlowComponent = ({ fieldValue }) => {
   const [nodes, setNodes] = useState([]);
   const [edges, setEdges] = useState([]);
+
+  const { updateEdgeValue } = useEdgeValues();
+
+  const nodeTypes = {
+    circle: CircleNode,
+  };
 
   console.log(nodes);
 
@@ -37,6 +45,7 @@ const ReactFlowComponent = ({ fieldValue }) => {
     setEdges((eds) =>
       eds.map((edge) => (edge.id === id ? { ...edge, label: newLabel } : edge))
     );
+    updateEdgeValue(id, newLabel);
   };
 
   return (
@@ -49,6 +58,7 @@ const ReactFlowComponent = ({ fieldValue }) => {
       <ReactFlow
         nodes={nodes}
         edges={edges}
+        nodeTypes={nodeTypes}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
