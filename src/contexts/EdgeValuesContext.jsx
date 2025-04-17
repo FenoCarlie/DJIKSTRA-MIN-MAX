@@ -13,10 +13,11 @@ export const EdgeValuesProvider = ({ children }) => {
   const [edgeValues, setEdgeValues] = useState({}); // État pour stocker les valeurs des liaisons
 
   // Fonction pour mettre à jour les valeurs des liaisons
-  const updateEdgeValue = (id, newValue) => {
+  const updateEdgeValue = (sourceLabel, targetLabel, id, newValue) => {
+    const key = `${sourceLabel}${targetLabel}`;
     setEdgeValues((prevValues) => ({
       ...prevValues,
-      [id]: newValue,
+      [key]: { id, value: newValue },
     }));
   };
 

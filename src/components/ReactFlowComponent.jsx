@@ -12,6 +12,7 @@ import NodesGenerator from "./NodesGenerator";
 import EdgeModifier from "./EdgeModifier";
 import CircleNode from "./CircleNode";
 import { useEdgeValues } from "../contexts/EdgeValuesContext";
+import Data from "./Data";
 
 const ReactFlowComponent = ({ fieldValue }) => {
   const [nodes, setNodes] = useState([]);
@@ -22,8 +23,6 @@ const ReactFlowComponent = ({ fieldValue }) => {
   const nodeTypes = {
     circle: CircleNode,
   };
-
-  console.log(nodes);
 
   const onNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
@@ -45,9 +44,23 @@ const ReactFlowComponent = ({ fieldValue }) => {
     setEdges((eds) =>
       eds.map((edge) => (edge.id === id ? { ...edge, label: newLabel } : edge))
     );
-    updateEdgeValue(id, newLabel);
-  };
 
+    const sourceNode = nodes.find(
+      (node) => node.id === edges.find((e) => e.id === id).source
+    );
+    const targetNode = nodes.find(
+      (node) => node.id === edges.find((e) => e.id === id).target
+    );
+
+    if (sourceNode && targetNode) {
+      updateEdgeValue(
+        sourceNode.data.label,
+        targetNode.data.label,
+        id,
+        newLabel
+      ); // Mettre à jour le contexte global
+    }
+  };
   return (
     <div className="h-full">
       <NodesGenerator
@@ -73,6 +86,8 @@ const ReactFlowComponent = ({ fieldValue }) => {
         nodes={nodes}
         updateEdgeLabel={updateEdgeLabel}
       />
+
+      <Data nodes={nodes} />
     </div>
   );
 };
